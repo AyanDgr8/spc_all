@@ -1,0 +1,25 @@
+{
+  "name": "shams-reports-app",
+  "version": "1.0.0",
+  "description": "Login app with dashboard for reports",
+  "main": "server.js",
+  "type": "module",
+  "scripts": {
+    "start": "node server.js",
+    "create-user": "node makeUser.js",
+    "dev": "NODE_OPTIONS=--max_old_space_size=4096 nodemon server.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "bcrypt": "^5.1.1",
+    "jsonwebtoken": "^9.0.2",
+    "mysql2": "^3.6.5",
+    "dotenv": "^16.3.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.2"
+  },
+  "keywords": ["login", "dashboard", "reports", "authentication"],
+  "author": "Shams Reports",
+  "license": "ISC"
+}

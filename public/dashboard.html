@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dashboard – SPC Reports</title>
+  <!-- Favicon so the tab shows the same logo -->
+  <link rel="icon" type="image/png" href="/uploads/MultyLogo.png" />
+  <link rel="shortcut icon" type="image/png" href="/uploads/MultyLogo.png" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/axios@1.6.0/dist/axios.min.js"></script>
+  <style>
+    body {
+      background: #364c63;
+      min-height: 100vh;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    .navbar {
+      background: #2c3e50 !important;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+    .navbar-brand .navbar-item {
+      color: #EF6F53 !important;
+      font-weight: 800;
+      font-size: 1.5rem;
+    }
+    .navbar-end .navbar-item {
+      color: #fff !important;
+    }
+    .dashboard-container {
+      padding: 3rem 1.5rem;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: calc(100vh - 120px);
+    }
+    .dashboard-card {
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+      padding: 3rem;
+      max-width: 600px;
+      width: 100%;
+      text-align: center;
+    }
+    .welcome-text {
+      color: #2c3e50;
+      font-size: 2rem;
+      font-weight: 600;
+      margin-bottom: 1rem;
+    }
+    .subtitle-text {
+      color: #7f8c8d;
+      font-size: 1.1rem;
+      margin-bottom: 3rem;
+    }
+    .report-buttons {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+      max-width: 400px;
+      margin: 0 auto;
+    }
+    .report-button {
+      background: linear-gradient(135deg, #EF6F53, #e74c3c);
+      border: none;
+      border-radius: 8px;
+      color: white;
+      padding: 1.5rem 2rem;
+      font-size: 1.1rem;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 15px rgba(239, 111, 83, 0.3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+    }
+    .report-button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(239, 111, 83, 0.4);
+      color: white;
+      text-decoration: none;
+    }
+    .report-button:active {
+      transform: translateY(0);
+    }
+    .report-button.secondary {
+      background: linear-gradient(135deg, #3498db, #2980b9);
+      box-shadow: 0 4px 15px rgba(52, 152, 219, 0.3);
+    }
+    .report-button.secondary:hover {
+      box-shadow: 0 6px 20px rgba(52, 152, 219, 0.4);
+    }
+    .logout-btn {
+      background: #e74c3c;
+      border: none;
+      color: white;
+      padding: 0.5rem 1rem;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+    .logout-btn:hover {
+      background: #c0392b;
+    }
+    @media (max-width: 768px) {
+      .dashboard-card {
+        margin: 1rem;
+        padding: 2rem 1.5rem;
+      }
+      .welcome-text {
+        font-size: 1.5rem;
+      }
+      .report-button {
+        padding: 1.2rem 1.5rem;
+        font-size: 1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <nav class="navbar" role="navigation">
+    <div class="navbar-brand">
+      <div class="navbar-item">
+        Multycomm Reports
+      </div>
+    </div>
+    <div class="navbar-menu">
+      <div class="navbar-end">
+        <div class="navbar-item">
+          <span id="userWelcome">Welcome!</span>
+        </div>
+        <div class="navbar-item">
+          <button class="logout-btn" onclick="logout()">Logout</button>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <div class="dashboard-container">
+    <div class="dashboard-card">
+      <p class="subtitle-text">Select a report to view</p>
+      
+      <div class="report-buttons">
+        <a href="https://reports.voicemeetme.net:5656" class="report-button">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M16 7C16 9.20914 14.2091 11 12 11C9.79086 11 8 9.20914 8 7C8 4.79086 9.79086 3 12 3C14.2091 3 16 4.79086 16 7Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M12 14C8.13401 14 5 17.134 5 21H19C19 17.134 15.866 14 12 14Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          User Activity Report
+        </a>
+        
+        <a href="https://reports.voicemeetme.net:9595" class="report-button secondary">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M9 11H15M9 15H15M17 21H7C5.89543 21 5 20.1046 5 19V5C5 3.89543 5.89543 3 7 3H12.5858C12.851 3 13.1054 3.10536 13.2929 3.29289L19.7071 9.70711C19.8946 9.89464 20 10.149 20 10.4142V19C20 20.1046 19.1046 21 18 21H17ZM17 21V11H13V7H7V19H17Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          Combined Reports
+        </a>
+        
+        <a href="https://reports.voicemeetme.net:5666/" class="report-button">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M14 2H6C4.89543 2 4 2.89543 4 4V20C4 21.1046 4.89543 22 6 22H18C19.1046 22 20 21.1046 20 20V8L14 2Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M14 2V8H20" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M16 13H8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M16 17H8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M10 9H8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          APR Report
+        </a>
+      </div>
+      
+    </div>
+  </div>
+
+  <script>
+    // Check authentication on page load
+    async function checkAuth() {
+      const token = localStorage.getItem('authToken');
+      if (!token) {
+        window.location.href = '/';
+        return;
+      }
+
+      try {
+        const response = await axios.get('/api/verify', {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        });
+
+        if (response.data.success) {
+          document.getElementById('userWelcome').textContent = `Welcome, ${response.data.user.username}!`;
+        } else {
+          throw new Error('Invalid token');
+        }
+      } catch (error) {
+        console.error('Authentication failed:', error);
+        localStorage.removeItem('authToken');
+        window.location.href = '/';
+      }
+    }
+
+    // Logout function
+    async function logout() {
+      const token = localStorage.getItem('authToken');
+      
+      try {
+        if (token) {
+          await axios.post('/api/logout', {}, {
+            headers: {
+              'Authorization': `Bearer ${token}`
+            }
+          });
+        }
+      } catch (error) {
+        console.error('Logout error:', error);
+      } finally {
+        localStorage.removeItem('authToken');
+        window.location.href = '/';
+      }
+    }
+
+    // Initialize
+    checkAuth();
+  </script>
+</body>
+</html>
