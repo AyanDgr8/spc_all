@@ -10,25 +10,25 @@ async function main() {
   const email = 'ayan@multycomm.com';
   const plainPassword = 'Ayan1012';
 
-  // const pool = mysql.createPool({
-  //   host: 'localhost',
-  //   user: 'root',
-  //   password: 'Ayan@1012',
-  //   database: 'shams',
-  //   port: 3306,
-  //   waitForConnections: true,
-  //   connectionLimit: 5,
-  // });
-
   const pool = mysql.createPool({
-    host:"0.0.0.0",
+    host: 'localhost',
     user: 'root',
-    password: 'WELcome@123',
-    database: 'shams',
+    password: 'Ayan@1012',
+    database: 'spc',
     port: 3306,
     waitForConnections: true,
     connectionLimit: 5,
   });
+
+  // const pool = mysql.createPool({
+  //   host:"0.0.0.0",
+  //   user: 'root',
+  //   password: 'WELcome@123',
+  //   database: 'spc',
+  //   port: 3306,
+  //   waitForConnections: true,
+  //   connectionLimit: 5,
+  // });
 
   const conn = await pool.getConnection();
   try {
